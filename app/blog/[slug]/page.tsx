@@ -1,35 +1,29 @@
 import { getAllPosts, getPostBySlug } from '@/lib/posts';
-import { MDXRemote } from 'next-mdx-remote/rsc';
-import { notFound } from 'next/navigation';
 
-const GENRE_ICONS: Record<string, string> = {
-  haircolor: '🎨', haircare: '✨', skincare: '🌸', nail: '💅', supplement: '💊',
+type Props = {
+  params: Promise<{ slug: string }>;
 };
 
 export async function generateStaticParams() {
-  return getAllPosts().map(p => ({ slug: p.slug }));
+  const posts = getAllPosts();
+  return posts.map((post) => ({ slug: post.slug }));
 }
 
-export default function ArticlePage({ params }: { params: { slug: string } }) {
-  const post = getPostBySlug(params.slug);
-  if (!post) notFound();
+export default async function BlogPost({ params }: Props) {
+  const { slug } = await params;
+  const post = getPostBySlug(slug);
+
+  if (!post) {
+    return <div style={{padding:'2rem'}}>記事が見つかりませんでした</div>;
+  }
+
   return (
-    <>
-      <div className="article-hero">
-        <div className="article-hero-inner">
-          <p className="article-genre">{GENRE_ICONS[post.genre] || '📄'} {post.genre}</p>
-          <h1 className="article-title">{post.title}</h1>
-          <div className="article-meta"><span>{post.date}</span></div>
-          {post.tags.length > 0 && (
-            <div className="tags">
-              {post.tags.map(t => <span key={t} className="tag">#{t}</span>)}
-            </div>
-          )}
-        </div>
-      </div>
-      <article className="article-body">
-        <MDXRemote source={post.content} />
-      </article>
-    </>
+    <article style={{maxWidth:'800px',margin:'0 auto',padding:'2rem'}}>
+      <h1 style={{fontSize:'1.8rem',fontWeight:'bold',marginBottom:'1rem'}}>{post.title}</h1>
+      <time style={{color:'#888',fontSize:'0.9rem'}}>{post.date}</time>
+      <div style={{marginTop:'2rem',lineHeight:'1.8'}}
+        dangerouslySetInnerHTML={{ __html: post.content }}
+      />
+    </article>
   );
 }
