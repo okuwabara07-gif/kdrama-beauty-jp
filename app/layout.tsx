@@ -2,9 +2,8 @@ import type { Metadata } from 'next';
 import './globals.css';
 export const metadata: Metadata = {
   title: '韓国ドラマ美容 | K-Beauty Portal',
-  description: '韓国ドラマ・韓国女優の美容法最新情報',
-  openGraph: { title: '韓国ドラマ美容', description: '韓国ドラマ・韓国女優の美容法最新情報', siteName: 'K-Beauty Portal', type: 'website' },
-  twitter: { card: 'summary_large_image', title: '韓国ドラマ美容', description: '韓国ドラマ・韓国女優の美容法最新情報', site: '@beauty_note_j' },
+  description: '韓国ドラマ美容の最新比較ランキング・口コミ・おすすめ商品',
+  twitter: { card: 'summary_large_image', site: '@beauty_note_j', creator: '@beauty_note_j' },
 };
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
