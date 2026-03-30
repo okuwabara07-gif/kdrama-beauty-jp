@@ -1,42 +1,28 @@
 import Link from 'next/link';
-import { getAllPosts } from '@/lib/posts';
-
-export default function HomePage() {
-  const posts = getAllPosts().slice(0, 9);
+export default function Home() {
   return (
-    <>
-      <section className="hero">
-        <p className="hero-eyebrow">K-Drama Beauty</p>
-        <h1 className="hero-title">韓国ドラマの美容を、もっとリアルに。</h1>
-        <p className="hero-sub">話題の韓国ドラマで使われているコスメ・スキンケア・ヘアケアをまとめてご紹介。</p>
-        <Link href="/blog" style={{ display: 'inline-block', background: 'var(--pink)', color: '#fff', padding: '12px 28px', borderRadius: '50px', fontWeight: 700, fontSize: 14, textDecoration: 'none' }}>
-          記事をみる →
-        </Link>
-      </section>
-      <div className="container">
-        <section className="section">
-          <h2 className="section-title">最新記事</h2>
-          {posts.length === 0 ? (
-            <div className="empty">
-              <div className="empty-icon">📝</div>
-              <p>記事はまだありません。</p>
-            </div>
-          ) : (
-            <div className="post-grid">
-              {posts.map(post => (
-                <Link key={post.slug} href={`/blog/${post.slug}`} className="post-card">
-                  <div className="post-card-body">
-                    <p className="post-card-genre">{post.genre}</p>
-                    <h3 className="post-card-title">{post.title}</h3>
-                    <p className="post-card-excerpt">{post.excerpt}</p>
-                    <p className="post-card-date">{post.date}</p>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          )}
-        </section>
+    <main>
+      <header className="site-header">
+        <p className="eyebrow">🎬 K · BEAUTY PORTAL</p>
+        <h1 className="site-title">韓国ドラマ美容</h1>
+      </header>
+      <nav className="site-nav">
+        <Link href="/" className="active">RANKING</Link>
+        <Link href="/blog">ARTICLES</Link>
+        <Link href="/privacy">PRIVACY</Link>
+      </nav>
+      <div className="portal-banner">
+        <p className="portal-banner-label">FEATURED</p>
+        <p className="portal-banner-title">AIパーソナルカラー診断 × 韓国コスメランキング</p>
+        <a href="https://beauty-portal-jp.vercel.app" target="_blank" className="portal-banner-link">BEAUTY PORTAL →</a>
       </div>
-    </>
+      <section style={{padding:'0 24px'}}>
+        <p className="section-label">韓国ドラマ美容 · TOP ARTICLES</p>
+      </section>
+      <footer className="site-footer">
+        <span>© 2026 AOKAE LLC</span>
+        <a href="https://beauty-portal-jp.vercel.app" target="_blank" className="footer-portal">BEAUTY PORTAL →</a>
+      </footer>
+    </main>
   );
 }
