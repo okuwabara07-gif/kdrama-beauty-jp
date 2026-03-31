@@ -1,2 +1,3 @@
 # kdrama-beauty-jp
-韓国ドラマ美容
+
+Updated: 2026-04-01
