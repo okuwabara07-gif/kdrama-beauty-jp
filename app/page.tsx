@@ -1,27 +1,35 @@
-import Link from 'next/link';
 export default function Home() {
   return (
     <main>
       <header className="site-header">
-        <p className="eyebrow">🎬 K · BEAUTY PORTAL</p>
-        <h1 className="site-title">韓国ドラマ美容</h1>
+        <div className="site-nav-bar">
+          <div className="site-logo">K-Drama Beauty</div>
+          <div style={{display:'flex',flexDirection:'column' as const,gap:4}}>
+            <div style={{width:20,height:'0.5px',background:'#2A2218'}}></div>
+            <div style={{width:14,height:'0.5px',background:'#2A2218'}}></div>
+            <div style={{width:20,height:'0.5px',background:'#2A2218'}}></div>
+          </div>
+        </div>
+        <div className="eyebrow" style={{marginBottom:8}}>K · BEAUTY PORTAL</div>
+        <div className="section-title">韓国ドラマ美容のランキング</div>
       </header>
-      <nav style={{display:'flex',borderBottom:'0.5px solid #E8DDD8',overflowX:'auto'}}>
-        <Link href="/" style={{flex:1,minWidth:80,padding:'10px 8px',textAlign:'center',fontFamily:"'DM Mono',monospace",fontSize:9,letterSpacing:'2px',color:'#2C2420',borderBottom:'1px solid #2C2420',whiteSpace:'nowrap'}}>RANKING</Link>
-        <Link href="/blog" style={{flex:1,minWidth:80,padding:'10px 8px',textAlign:'center',fontFamily:"'DM Mono',monospace",fontSize:9,letterSpacing:'2px',color:'#C4B5AD',borderBottom:'1px solid transparent',whiteSpace:'nowrap'}}>ARTICLES</Link>
-        <Link href="/privacy" style={{flex:1,minWidth:80,padding:'10px 8px',textAlign:'center',fontFamily:"'DM Mono',monospace",fontSize:9,letterSpacing:'2px',color:'#C4B5AD',borderBottom:'1px solid transparent',whiteSpace:'nowrap'}}>PRIVACY</Link>
-      </nav>
+
       <div className="portal-banner">
-        <p className="portal-banner-label">FEATURED</p>
-        <p className="portal-banner-title">AIパーソナルカラー診断 × 韓国コスメランキング</p>
-        <a href="https://beauty-portal-jp.vercel.app" target="_blank" className="portal-banner-link">BEAUTY PORTAL →</a>
+        <div className="portal-banner-label">FEATURED</div>
+        <div className="portal-banner-title">AIパーソナルカラー診断 × 韓国コスメ</div>
+        <a href="https://beauty-portal-jp.vercel.app" target="_blank" className="portal-banner-link">
+          BEAUTY PORTAL →
+        </a>
       </div>
-      <section style={{padding:'0 24px'}}>
-        <p className="section-label">韓国ドラマ美容 · TOP ARTICLES</p>
-      </section>
+
+      <div className="section-label">韓国ドラマ美容 · TOP ARTICLES</div>
+
       <footer className="site-footer">
         <span>© 2026 AOKAE LLC</span>
-        <a href="https://beauty-portal-jp.vercel.app" target="_blank" className="footer-portal">BEAUTY PORTAL →</a>
+        <a href="https://beauty-portal-jp.vercel.app" target="_blank"
+          style={{color:'#A89F94',borderBottom:'0.5px solid #DDD9D3',paddingBottom:1}}>
+          BEAUTY PORTAL →
+        </a>
       </footer>
     </main>
   );
