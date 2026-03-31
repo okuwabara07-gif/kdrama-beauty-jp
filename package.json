@@ -10,11 +10,11 @@
   },
   "dependencies": {
     "gray-matter": "^4.0.3",
-    "next": "^15.2.1",
+    "next": "15.2.4",
     "next-mdx-remote": "^6.0.0",
     "next-sitemap": "^4.2.3",
-    "react": "^18",
-    "react-dom": "^18"
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@types/node": "^20",
