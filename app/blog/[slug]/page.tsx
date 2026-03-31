@@ -1,29 +1,32 @@
-import { getAllPosts, getPostBySlug } from '@/lib/posts';
-
-type Props = {
-  params: Promise<{ slug: string }>;
-};
+import { MDXRemote } from 'next-mdx-remote/rsc'
+import { getPostBySlug, getAllPosts } from '@/lib/posts'
+import { notFound } from 'next/navigation'
 
 export async function generateStaticParams() {
-  const posts = getAllPosts();
-  return posts.map((post) => ({ slug: post.slug }));
+  return getAllPosts().map(p => ({ slug: p.slug }))
 }
 
-export default async function BlogPost({ params }: Props) {
-  const { slug } = await params;
-  const post = getPostBySlug(slug);
+type Props = {
+  params: Promise<{ slug: string }>
+}
 
-  if (!post) {
-    return <div style={{padding:'2rem'}}>記事が見つかりませんでした</div>;
-  }
-
+export default async function PostPage({ params }: Props) {
+  const { slug } = await params
+  const post = getPostBySlug(slug)
+  if (!post) notFound()
   return (
-    <article style={{maxWidth:'800px',margin:'0 auto',padding:'2rem'}}>
-      <h1 style={{fontSize:'1.8rem',fontWeight:'bold',marginBottom:'1rem'}}>{post.title}</h1>
-      <time style={{color:'#888',fontSize:'0.9rem'}}>{post.date}</time>
-      <div style={{marginTop:'2rem',lineHeight:'1.8'}}
-        dangerouslySetInnerHTML={{ __html: post.content }}
-      />
-    </article>
-  );
+    <main>
+      <header className="site-header">
+        <div className="site-title">{post.title}</div>
+      </header>
+      <main style={{maxWidth:'900px',margin:'0 auto',padding:'2rem 1.5rem 4rem'}}>
+        <div className="section-label">{post.genre}</div>
+        <h1 style={{fontFamily:'Cormorant Garamond,serif',fontWeight:300,fontSize:'1.4rem',margin:'1rem 0 0.5rem'}}>{post.title}</h1>
+        <p style={{fontSize:'0.7rem',color:'var(--text-secondary)',marginBottom:'2rem'}}>{post.date}</p>
+        <div style={{fontSize:'0.9rem',lineHeight:1.9}}>
+          <MDXRemote source={post.content} />
+        </div>
+      </main>
+    </main>
+  )
 }
