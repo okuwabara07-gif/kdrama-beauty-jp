@@ -5,6 +5,23 @@ import SlideInRecommend from './SlideInRecommend'
 
 export const dynamic = 'force-dynamic'
 
+export async function generateMetadata({ params }: any) {
+  const { slug } = await params
+  const post = getPostBySlug(slug)
+  if (!post) return {}
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://haircolor-lab.vercel.app'
+  return {
+    title: post.title,
+    description: post.excerpt,
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      images: [`${baseUrl}/og?title=${encodeURIComponent(post.title)}&genre=${encodeURIComponent(post.genre)}`],
+    },
+    twitter: { card: 'summary_large_image', title: post.title },
+  }
+}
+
 type Props = { params: Promise<{ slug: string }> }
 
 export default async function PostPage({ params }: Props) {
@@ -20,22 +37,22 @@ export default async function PostPage({ params }: Props) {
       <header className="site-header">
         <div className="site-title">{post.title}</div>
       </header>
-      <main style={{maxWidth:'860px',margin:'0 auto',padding:'2rem 1.5rem 4rem'}}>
+      <main style={{maxWidth:'900px',margin:'0 auto',padding:'2rem 1.5rem 4rem'}}>
         <div className="section-label">{post.genre}</div>
         <h1 style={{fontFamily:'serif',fontWeight:300,fontSize:'1.4rem',margin:'1rem 0 0.5rem'}}>{post.title}</h1>
         <p style={{fontSize:'0.7rem',color:'#888',marginBottom:'2rem'}}>{post.date}</p>
 
-        {/* 記事前アフィリエイト */}
+        {/* アフィリエイトバナー（記事上） */}
         <div style={{marginBottom:'2rem',padding:'1rem',background:'linear-gradient(135deg,#faf7ff,#f5eeff)',borderRadius:'16px',border:'1.5px solid #e8d4ff'}}>
           <p style={{fontSize:'0.7rem',color:'#9333ea',fontWeight:700,marginBottom:'0.75rem'}}>この記事を読む前に試してほしい</p>
           <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(140px,1fr))',gap:'0.75rem'}}>
             <a href="https://www.amazon.co.jp/?tag=haircolorab22-22" target="_blank" rel="noopener noreferrer sponsored" style={{display:'flex',alignItems:'center',gap:'8px',padding:'10px 12px',background:'white',borderRadius:'12px',textDecoration:'none',border:'1px solid #fce4ec'}}>
               <span style={{fontSize:'1.2rem'}}>📦</span>
-              <div><div style={{fontSize:'0.75rem',fontWeight:700,color:'#333'}}>Amazonでさがす</div><div style={{fontSize:'0.65rem',color:'#e91e8c'}}>翌日配送対応</div></div>
+              <div><div style={{fontSize:'0.75rem',fontWeight:700,color:'#333'}}>Amazonで探す</div><div style={{fontSize:'0.65rem',color:'#e91e8c'}}>翌日配送対応</div></div>
             </a>
-            <a href="https://hb.afl.rakuten.co.jp/hgc/g00q0724.n763w947.g00q0724.n763x2b5/?pc=https%3A%2F%2Fwww.rakuten.co.jp%2F" target="_blank" rel="noopener noreferrer sponsored" style={{display:'flex',alignItems:'center',gap:'8px',padding:'10px 12px',background:'white',borderRadius:'12px',textDecoration:'none',border:'1px solid #e8d4ff'}}>
+            <a href={`https://hb.afl.rakuten.co.jp/hgc/g00q0724.2bo11179.g00q0724.2bo12179/?pc=https%3A%2F%2Fwww.rakuten.co.jp%2F`} target="_blank" rel="noopener noreferrer sponsored" style={{display:'flex',alignItems:'center',gap:'8px',padding:'10px 12px',background:'white',borderRadius:'12px',textDecoration:'none',border:'1px solid #ffd4d4'}}>
               <span style={{fontSize:'1.2rem'}}>🛒</span>
-              <div><div style={{fontSize:'0.75rem',fontWeight:700,color:'#333'}}>楽天でさがす</div><div style={{fontSize:'0.65rem',color:'#9333ea'}}>ポイント還元あり</div></div>
+              <div><div style={{fontSize:'0.75rem',fontWeight:700,color:'#333'}}>楽天で探す</div><div style={{fontSize:'0.65rem',color:'#e91e8c'}}>ポイント還元あり</div></div>
             </a>
           </div>
         </div>
@@ -45,76 +62,58 @@ export default async function PostPage({ params }: Props) {
           <MDXRemote source={post.content} />
         </div>
 
-        {/* ランキングセクション */}
-        <div style={{marginTop:'2.5rem',padding:'1.5rem',background:'#fff9f0',borderRadius:'16px',border:'1px solid #fde68a'}}>
-          <p style={{fontSize:'0.75rem',color:'#d97706',fontWeight:700,marginBottom:'1rem'}}>🏆 おすすめランキングTOP3</p>
-          {[
-            {rank:1, label:'第1位', desc:'人気No.1！口コミ評価最高', color:'#f59e0b'},
-            {rank:2, label:'第2位', desc:'コスパ最強・初心者におすすめ', color:'#9ca3af'},
-            {rank:3, label:'第3位', desc:'プロも愛用する本格派', color:'#b45309'},
-          ].map(item => (
-            <a key={item.rank} href="https://www.amazon.co.jp/?tag=haircolorab22-22" target="_blank" rel="noopener noreferrer sponsored"
-              style={{display:'flex',alignItems:'center',gap:'12px',padding:'12px',marginBottom:'8px',background:'white',borderRadius:'12px',textDecoration:'none',border:`1px solid ${item.color}20`}}>
-              <div style={{width:'36px',height:'36px',borderRadius:'50%',background:item.color,display:'flex',alignItems:'center',justifyContent:'center',color:'white',fontWeight:900,fontSize:'0.8rem',flexShrink:0}}>{item.rank}</div>
-              <div>
-                <div style={{fontSize:'0.8rem',fontWeight:700,color:'#333'}}>{item.label}</div>
-                <div style={{fontSize:'0.7rem',color:'#888'}}>{item.desc}</div>
-              </div>
-              <div style={{marginLeft:'auto',fontSize:'0.7rem',color:item.color,fontWeight:700}}>→ 見る</div>
-            </a>
-          ))}
+        {/* ランキングバナー */}
+        <div style={{margin:'2rem 0',padding:'1.5rem',background:'#fff9f0',borderRadius:'16px',border:'2px solid #ffd700'}}>
+          <p style={{fontSize:'0.8rem',fontWeight:700,color:'#f59e0b',marginBottom:'1rem'}}>🏆 おすすめ商品ランキング</p>
+          <div style={{display:'flex',flexDirection:'column',gap:'10px'}}>
+            {[
+              {rank:'1位',label:'Amazonベストセラー',url:'https://www.amazon.co.jp/bestsellers?tag=haircolorab22-22',color:'#ffd700'},
+              {rank:'2位',label:'楽天週間ランキング',url:'https://ranking.rakuten.co.jp/',color:'#c0c0c0'},
+              {rank:'3位',label:'コスパ最強商品',url:'https://www.amazon.co.jp/?tag=haircolorab22-22',color:'#cd7f32'},
+            ].map((item,i) => (
+              <a key={i} href={item.url} target="_blank" rel="noopener noreferrer sponsored"
+                style={{display:'flex',alignItems:'center',gap:'12px',padding:'10px',background:'white',borderRadius:'10px',textDecoration:'none',border:`1px solid ${item.color}`}}>
+                <span style={{fontSize:'1.2rem',fontWeight:900,color:item.color,minWidth:'36px'}}>{item.rank}</span>
+                <span style={{fontSize:'0.85rem',fontWeight:600,color:'#333'}}>{item.label}</span>
+                <span style={{marginLeft:'auto',fontSize:'0.75rem',color:'#9333ea'}}>→ 見る</span>
+              </a>
+            ))}
+          </div>
         </div>
 
         {/* FAQ */}
-        <div style={{marginTop:'2.5rem'}}>
-          <p style={{fontSize:'0.75rem',color:'#374151',fontWeight:700,marginBottom:'1rem'}}>❓ よくある質問</p>
-          {[
-            {q:'初心者でも始められますか？', a:'はい、初心者の方でも簡単に始められます。基本的なことから順番に解説しているので安心してください。'},
-            {q:'どのくらいで効果が出ますか？', a:'個人差はありますが、継続することで2〜4週間で変化を感じる方が多いです。'},
-            {q:'費用はどのくらいかかりますか？', a:'初期費用を抑えて始めることができます。まずは無料・低コストのものからお試しください。'},
-          ].map((faq, i) => (
-            <div key={i} style={{marginBottom:'12px',padding:'12px 16px',background:'#f9fafb',borderRadius:'12px',borderLeft:'3px solid #9333ea'}}>
-              <p style={{fontSize:'0.8rem',fontWeight:700,color:'#1f2937',marginBottom:'4px'}}>Q. {faq.q}</p>
-              <p style={{fontSize:'0.75rem',color:'#6b7280',margin:0}}>A. {faq.a}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* 記事後アフィリエイト */}
-        <div style={{marginTop:'2.5rem',borderTop:'2px solid #e8d4ff',paddingTop:'2rem'}}>
-          <p style={{fontSize:'0.75rem',color:'#9333ea',fontWeight:700,marginBottom:'1rem'}}>今すぐ試してほしいおすすめアイテム</p>
-          <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(150px,1fr))',gap:'1rem'}}>
-            <a href="https://www.amazon.co.jp/?tag=haircolorab22-22" target="_blank" rel="noopener noreferrer sponsored" style={{display:'block',padding:'1rem',border:'1px solid #f0e6ff',borderRadius:'12px',textDecoration:'none',background:'#faf7ff'}}>
-              <div style={{fontSize:'1.5rem',marginBottom:'0.5rem'}}>📦</div>
-              <div style={{fontSize:'0.8rem',fontWeight:700,color:'#333',marginBottom:'0.25rem'}}>Amazon</div>
-              <div style={{fontSize:'0.7rem',color:'#9333ea',fontWeight:600}}>→ 今すぐ公式サイトへ</div>
-            </a>
-            <a href="https://hb.afl.rakuten.co.jp/hgc/g00q0724.n763w947.g00q0724.n763x2b5/?pc=https%3A%2F%2Fwww.rakuten.co.jp%2F" target="_blank" rel="noopener noreferrer sponsored" style={{display:'block',padding:'1rem',border:'1px solid #ffe6f0',borderRadius:'12px',textDecoration:'none',background:'#fff7fa'}}>
-              <div style={{fontSize:'1.5rem',marginBottom:'0.5rem'}}>🛒</div>
-              <div style={{fontSize:'0.8rem',fontWeight:700,color:'#333',marginBottom:'0.25rem'}}>楽天市場</div>
-              <div style={{fontSize:'0.7rem',color:'#e91e8c',fontWeight:600}}>→ ポイントお得</div>
-            </a>
+        <div style={{margin:'2rem 0',padding:'1.5rem',background:'#f0f9ff',borderRadius:'16px',border:'1px solid #bae6fd'}}>
+          <p style={{fontSize:'0.8rem',fontWeight:700,color:'#0284c7',marginBottom:'1rem'}}>❓ よくある質問</p>
+          <div style={{display:'flex',flexDirection:'column',gap:'12px'}}>
+            {[
+              {q:`${post.title}はどのくらいで効果が出ますか？`,a:'個人差はありますが、継続して1〜3ヶ月で効果を感じる方が多いです。'},
+              {q:`${post.title}を始める際の注意点は？`,a:'無理をせず、まずは基本から始めましょう。体調に合わせて調整することが大切です。'},
+              {q:`おすすめの商品・サービスはありますか？`,a:'Amazonや楽天でランキング上位の商品から試してみることをおすすめします。'},
+            ].map((faq,i) => (
+              <details key={i} style={{background:'white',borderRadius:'8px',padding:'12px',cursor:'pointer'}}>
+                <summary style={{fontSize:'0.85rem',fontWeight:600,color:'#0284c7'}}>{faq.q}</summary>
+                <p style={{fontSize:'0.8rem',color:'#666',marginTop:'8px',lineHeight:1.7}}>{faq.a}</p>
+              </details>
+            ))}
           </div>
         </div>
 
-        {/* 関連記事 */}
-        {related.length > 0 && (
-          <div style={{marginTop:'2.5rem'}}>
-            <p style={{fontSize:'0.75rem',color:'#9333ea',fontWeight:700,marginBottom:'1rem'}}>次に読む記事</p>
-            <div style={{display:'flex',flexDirection:'column',gap:'10px'}}>
-              {related.map((r: any) => (
-                <a key={r.slug} href={'/blog/'+r.slug} style={{display:'flex',gap:'12px',padding:'12px',background:'#faf7ff',borderRadius:'12px',border:'1px solid #e8d4ff',textDecoration:'none'}}>
-                  <div style={{fontSize:'1.5rem',flexShrink:0}}>📄</div>
-                  <div>
-                    <div style={{fontSize:'0.7rem',color:'#9333ea',marginBottom:'3px'}}>{r.genre}</div>
-                    <div style={{fontSize:'0.82rem',fontWeight:700,color:'#333'}}>{r.title}</div>
-                    <div style={{fontSize:'0.68rem',color:'#888',marginTop:'3px'}}>{r.excerpt}</div>
-                  </div>
-                </a>
-              ))}
-            </div>
+        {/* 次に読む記事 */}
+        <div style={{marginTop:'3rem',borderTop:'2px solid #e8d4ff',paddingTop:'2rem'}}>
+          <p style={{fontSize:'0.75rem',color:'#9333ea',fontWeight:700,marginBottom:'1rem'}}>次に読む記事</p>
+          <div style={{display:'flex',flexDirection:'column',gap:'12px'}}>
+            {related.map((r: any) => (
+              <a key={r.slug} href={'/blog/'+r.slug} style={{display:'flex',gap:'12px',padding:'12px',background:'#faf7ff',borderRadius:'12px',border:'1px solid #e8d4ff',textDecoration:'none'}}>
+                <div style={{fontSize:'2rem',flexShrink:0}}>📄</div>
+                <div>
+                  <div style={{fontSize:'0.7rem',color:'#9333ea',marginBottom:'4px'}}>{r.genre}</div>
+                  <div style={{fontSize:'0.85rem',fontWeight:700,color:'#333'}}>{r.title}</div>
+                  <div style={{fontSize:'0.7rem',color:'#888',marginTop:'4px'}}>{r.excerpt}</div>
+                </div>
+              </a>
+            ))}
           </div>
-        )}
+        </div>
 
         <SlideInRecommend nextSlug={nextPost?.slug ?? ''} nextTitle={nextPost?.title ?? ''} nextExcerpt={nextPost?.excerpt ?? ''} />
       </main>
