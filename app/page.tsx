@@ -1,50 +1,38 @@
 export default function Home() {
   return (
+    <main style={{minHeight:'100vh',background:'#fafafa'}}>
+      <div style={{maxWidth:'900px',margin:'0 auto',padding:'2rem 1.5rem'}}>
+        <h1 style={{fontSize:'1.8rem',fontWeight:900,marginBottom:'1rem'}}>ようこそ</h1>
+        <p style={{color:'#666',marginBottom:'2rem'}}>最新の記事をご覧ください。</p>
+
         {/* アフィリエイト */}
         <div style={{margin:'2rem 0',padding:'1rem',background:'linear-gradient(135deg,#faf7ff,#f5eeff)',borderRadius:'16px',border:'1.5px solid #e8d4ff'}}>
           <p style={{fontSize:'0.7rem',color:'#9333ea',fontWeight:700,marginBottom:'0.75rem'}}>おすすめアイテム</p>
           <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(140px,1fr))',gap:'0.75rem'}}>
-            <a href="https://rpx.a8.net/svt/ejp?a8mat=3Z4N6T+XXXXXX+XXXX+XXXXXX" target="_blank" rel="noopener noreferrer sponsored" style={{display:'flex',alignItems:'center',gap:'8px',padding:'10px 12px',background:'white',borderRadius:'12px',textDecoration:'none',border:'1px solid #e8d4ff'}}>
-              <span style={{fontSize:'1.2rem'}}>🛒</span>
-              <div><div style={{fontSize:'0.75rem',fontWeight:700,color:'#333'}}>楽天でさがす</div><div style={{fontSize:'0.65rem',color:'#9333ea'}}>ポイント還元あり</div></div>
-            </a>
-            <a href="https://www.amazon.co.jp/?tag=haircolorab22-22" target="_blank" rel="noopener noreferrer sponsored" style={{display:'flex',alignItems:'center',gap:'8px',padding:'10px 12px',background:'white',borderRadius:'12px',textDecoration:'none',border:'1px solid #fce4ec'}}>
+            <a href="https://www.amazon.co.jp/?tag=haircolorab22-22" target="_blank" rel="noopener noreferrer sponsored"
+              style={{display:'flex',alignItems:'center',gap:'8px',padding:'10px 12px',background:'white',borderRadius:'12px',textDecoration:'none',border:'1px solid #fce4ec'}}>
               <span style={{fontSize:'1.2rem'}}>📦</span>
-              <div><div style={{fontSize:'0.75rem',fontWeight:700,color:'#333'}}>Amazonでさがす</div><div style={{fontSize:'0.65rem',color:'#e91e8c'}}>翌日配送対応</div></div>
+              <div>
+                <div style={{fontSize:'0.75rem',fontWeight:700,color:'#333'}}>Amazonで探す</div>
+                <div style={{fontSize:'0.65rem',color:'#e91e8c'}}>翌日配送対応</div>
+              </div>
+            </a>
+            <a href="https://hb.afl.rakuten.co.jp/hgc/g00q0724.2bo11179.g00q0724.2bo12179/?pc=https%3A%2F%2Fwww.rakuten.co.jp%2F"
+              target="_blank" rel="noopener noreferrer sponsored"
+              style={{display:'flex',alignItems:'center',gap:'8px',padding:'10px 12px',background:'white',borderRadius:'12px',textDecoration:'none',border:'1px solid #e8d4ff'}}>
+              <span style={{fontSize:'1.2rem'}}>🛒</span>
+              <div>
+                <div style={{fontSize:'0.75rem',fontWeight:700,color:'#333'}}>楽天で探す</div>
+                <div style={{fontSize:'0.65rem',color:'#9333ea'}}>ポイント還元あり</div>
+              </div>
             </a>
           </div>
         </div>
-    <main>
-      <header className="site-header">
-        <div className="site-nav-bar">
-          <div className="site-logo">Hair Colour Lab</div>
-          <div style={{display:'flex',flexDirection:'column' as const,gap:4}}>
-            <div style={{width:20,height:'0.5px',background:'#2A2218'}}></div>
-            <div style={{width:14,height:'0.5px',background:'#2A2218'}}></div>
-            <div style={{width:20,height:'0.5px',background:'#2A2218'}}></div>
-          </div>
-        </div>
-        <div className="eyebrow" style={{marginBottom:8}}>K · BEAUTY PORTAL</div>
-        <div className="section-title">ヘアカラーのランキング</div>
-      </header>
 
-      <div className="portal-banner">
-        <div className="portal-banner-label">FEATURED</div>
-        <div className="portal-banner-title">AIパーソナルカラー診断 × 韓国コスメ</div>
-        <a href="https://beauty-portal-jp.vercel.app" target="_blank" className="portal-banner-link">
-          BEAUTY PORTAL →
+        <a href="/blog" style={{display:'inline-block',marginTop:'1rem',padding:'12px 24px',background:'#9333ea',color:'white',borderRadius:'12px',textDecoration:'none',fontWeight:700}}>
+          記事一覧を見る →
         </a>
       </div>
-
-      <div className="section-label">ヘアカラー · TOP ARTICLES</div>
-
-      <footer className="site-footer">
-        <span>© 2026 AOKAE LLC</span>
-        <a href="https://beauty-portal-jp.vercel.app" target="_blank"
-          style={{color:'#A89F94',borderBottom:'0.5px solid #DDD9D3',paddingBottom:1}}>
-          BEAUTY PORTAL →
-        </a>
-      </footer>
     </main>
-  );
+  )
 }
