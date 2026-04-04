@@ -3,8 +3,6 @@ export default function Home() {
     <main style={{fontFamily:'sans-serif',maxWidth:'900px',margin:'0 auto',padding:'2rem'}}>
       <h1 style={{fontSize:'1.5rem',fontWeight:700,marginBottom:'1rem'}}>ようこそ</h1>
       <p style={{color:'#666',marginBottom:'2rem'}}>最新の記事をご覧ください。</p>
-
-      {/* アフィリエイト */}
       <div style={{margin:'2rem 0',padding:'1rem',background:'linear-gradient(135deg,#faf7ff,#f5eeff)',borderRadius:'16px',border:'1.5px solid #e8d4ff'}}>
         <p style={{fontSize:'0.7rem',color:'#9333ea',fontWeight:700,marginBottom:'0.75rem'}}>おすすめアイテム</p>
         <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(140px,1fr))',gap:'0.75rem'}}>
@@ -18,7 +16,6 @@ export default function Home() {
           </a>
         </div>
       </div>
-
       <a href="/blog" style={{display:'inline-block',padding:'12px 24px',background:'#9333ea',color:'white',borderRadius:'12px',textDecoration:'none',fontWeight:700}}>
         記事一覧を見る →
       </a>
