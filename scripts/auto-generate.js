@@ -34,6 +34,12 @@ function request(options, body) {
   });
 }
 
+
+async function getUnsplashUrl(keyword) {
+  const q = encodeURIComponent(keyword.replace(/おすすめ|ランキング|比較|TOP5|【.*?】/g, '').trim() || 'beauty');
+  return `https://source.unsplash.com/800x450/?${q}`;
+}
+
 async function generateArticle(keyword) {
   const amazonLink = moshimoAmazonLink(keyword);
   const rakutenLink = moshimoRakutenLink(keyword);
@@ -66,6 +72,8 @@ title: "【${year}年最新】${keyword}おすすめランキングTOP5｜専門
 date: "${new Date().toISOString().split('T')[0]}"
 description: "${keyword}のおすすめ商品をランキング形式で徹底比較。${CRITERIA}の観点から選び方のポイントも解説します。"
 ---
+
+![${keyword}](https://source.unsplash.com/800x450/?${encodeURIComponent(keyword.replace(/[\u3040-\u9fff\u30a0-\u30ff]/g, '').trim() || 'beauty')})
 
 ## 結論：迷ったらこれを買えば間違いなし
 
