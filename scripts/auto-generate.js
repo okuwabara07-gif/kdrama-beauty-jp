@@ -39,6 +39,15 @@ async function generateArticle(keyword) {
   const rakutenLink = moshimoRakutenLink(keyword);
   const year = new Date().getFullYear();
 
+
+  const affiliateInstruction = `
+記事内に以下のアフィリエイトリンクを自然な形で必ず3箇所以上挿入してください：
+- 比較表の直後: [→ Amazonで今すぐ確認する](${amazonLink})
+- 第1位レビューの末尾: [→ 楽天市場で最安値を見る](${rakutenLink})
+- まとめセクション: [→ Amazonで詳細を見る](${amazonLink})
+各リンクの前後に購買を促す一言（「在庫確認はこちら」「公式価格をチェック」等）を入れてください。
+`;
+
   const prompt = `あなたはCRO（コンバージョン率最適化）の専門家でもあるプロのレビューライターです。
 「${keyword}」について、訪問者が即座に購買行動を起こしやすい、マイベスト・価格.com級の高品質な比較記事を日本語で書いてください。
 
