@@ -248,7 +248,7 @@ async function main() {
 
   console.log(`Generating CRO-optimized articles for ${SITE_NAME}...`);
 
-  for (const keyword of keywords.slice(0, 5)) {
+  for (const keyword of keywords.slice(0, 30)) {
     try {
       console.log(`Generating: ${keyword}`);
       const content = await generateArticle(keyword);
