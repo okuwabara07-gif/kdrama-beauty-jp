@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://kdrama-beauty-jp.vercel.app/sitemap.xml
