@@ -21,7 +21,6 @@ export async function generateMetadata({ params }: any) {
 }
 
 export async function generateStaticParams() {
-  const { getAllPosts } = await import('@/lib/posts')
   const posts = getAllPosts()
   return posts.map((post: any) => ({ slug: post.slug }))
 }
