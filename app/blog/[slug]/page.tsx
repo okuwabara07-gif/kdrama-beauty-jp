@@ -3,8 +3,6 @@ import { MDXRemote } from 'next-mdx-remote/rsc'
 import { notFound } from 'next/navigation'
 import SlideInRecommend from './SlideInRecommend'
 
-export const dynamic = 'force-dynamic'
-
 export async function generateMetadata({ params }: any) {
   const { slug } = await params
   const post = getPostBySlug(slug)
@@ -20,6 +18,12 @@ export async function generateMetadata({ params }: any) {
     },
     twitter: { card: 'summary_large_image', title: post.title },
   }
+}
+
+export async function generateStaticParams() {
+  const { getAllPosts } = await import('@/lib/posts')
+  const posts = getAllPosts()
+  return posts.map((post: any) => ({ slug: post.slug }))
 }
 
 type Props = { params: Promise<{ slug: string }> }
