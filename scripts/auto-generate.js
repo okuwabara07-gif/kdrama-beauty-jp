@@ -40,19 +40,115 @@ async function getUnsplashUrl(keyword) {
   return `https://source.unsplash.com/800x450/?${q}`;
 }
 
+
+// キーワードタイプ定義
+const KEYWORD_PATTERNS = {
+  ranking: (topic) => [
+    `${topic}おすすめランキング`,
+    `${topic}人気ランキング`,
+    `${topic}コスパ最強ランキング`,
+    `${topic}プロおすすめランキング`,
+    `${topic}口コミランキング`,
+  ],
+  question: (topic) => [
+    `${topic}どれがいい`,
+    `${topic}選び方 失敗しない`,
+    `${topic}違いは何`,
+    `${topic}効果ある`,
+    `${topic}初心者 どれ`,
+    `${topic}コスパ 比較`,
+  ],
+  worry: (topic) => [
+    `${topic}効果なかった 原因`,
+    `${topic}失敗した 対処法`,
+    `${topic}やめた理由`,
+    `${topic}デメリット`,
+    `${topic}注意点`,
+  ],
+  howto: (topic) => [
+    `${topic}正しい使い方`,
+    `${topic}始め方 初心者`,
+    `${topic}続け方 コツ`,
+    `${topic}効果的な方法`,
+    `${topic}タイミング いつ`,
+  ],
+  comparison: (topic) => [
+    `${topic}市販 サロン 違い`,
+    `${topic}安い 高い 比較`,
+    `${topic}プチプラ デパコス 比較`,
+    `${topic}国産 海外 比較`,
+  ],
+};
+
+function getKeywords() {
+  const topicBase = TOPIC.split('・')[0];
+  const all = [];
+  Object.values(KEYWORD_PATTERNS).forEach(fn => all.push(...fn(topicBase)));
+  return all;
+}
+
+function getArticleType(keyword) {
+  if (keyword.includes('どれ') || keyword.includes('選び方') || keyword.includes('違い')) return 'question';
+  if (keyword.includes('失敗') || keyword.includes('効果なかった') || keyword.includes('やめた') || keyword.includes('注意')) return 'worry';
+  if (keyword.includes('方法') || keyword.includes('使い方') || keyword.includes('始め方') || keyword.includes('コツ')) return 'howto';
+  if (keyword.includes('比較') || keyword.includes('vs') || keyword.includes('市販')) return 'comparison';
+  return 'ranking';
+}
+
+function getTitleByType(keyword, year, type) {
+  switch(type) {
+    case 'question': return `【${year}年】${keyword}｜プロが本音で答えます`;
+    case 'worry': return `${keyword}を解決｜原因と正しい対処法【${year}年版】`;
+    case 'howto': return `【${year}年最新】${keyword}完全ガイド｜プロが徹底解説`;
+    case 'comparison': return `【${year}年】${keyword}｜違いをプロが徹底比較`;
+    default: return `【${year}年最新】${keyword}おすすめTOP5｜専門家が徹底比較`;
+  }
+}
+
 async function generateArticle(keyword) {
+  
+  const articleType = getArticleType(keyword);
+  const title = getTitleByType(keyword, year, articleType);
+  const amazonSearchLink = `https://www.amazon.co.jp/s?k=${encodeURIComponent(keyword)}&tag=${AMAZON_TRACKING_ID}`;
+  const rakutenSearchLink = `https://search.rakuten.co.jp/search/mall/${encodeURIComponent(keyword)}/?af=${RAKUTEN_AFFILIATE_ID}`;
   const amazonLink = moshimoAmazonLink(keyword);
   const rakutenLink = moshimoRakutenLink(keyword);
-  const year = new Date().getFullYear();
 
+  const typePrompts = {
+    question: `「${keyword}」で悩む読者に、プロとして本音で答える記事を書いてください。読者の疑問に直接答え、最終的に商品購入へ自然に誘導してください。`,
+    worry: `「${keyword}」というネガティブな体験をした読者に共感しつつ、正しい解決策と適切な商品を提案する記事を書いてください。`,
+    howto: `「${keyword}」について、初心者でもわかる具体的なステップで解説し、必要な商品・道具を自然に紹介してください。`,
+    comparison: `「${keyword}」について、読者が最も知りたい具体的な違いを明確に比較し、読者のタイプ別におすすめを提示してください。`,
+    ranking: `「${keyword}」について、訪問者が即座に購買行動を起こしやすい比較ランキング記事を書いてください。`,
+  };
 
-  const affiliateInstruction = `
-記事内に以下のアフィリエイトリンクを自然な形で必ず3箇所以上挿入してください：
-- 比較表の直後: [→ Amazonで今すぐ確認する](${amazonLink})
-- 第1位レビューの末尾: [→ 楽天市場で最安値を見る](${rakutenLink})
-- まとめセクション: [→ Amazonで詳細を見る](${amazonLink})
-各リンクの前後に購買を促す一言（「在庫確認はこちら」「公式価格をチェック」等）を入れてください。
-`;
+  const prompt = \`あなたはCRO専門家でもあるプロのレビューライターです。
+${typePrompts[articleType] || typePrompts.ranking}
+
+サイト名：${SITE_NAME}
+テーマ：${TOPIC}
+評価基準：${CRITERIA}
+
+以下のCRO原則を守ってください：
+1. 冒頭に結論・1位商品を先に書く
+2. 各商品に「こんな人には向かない」デメリットも正直に書く（信頼性UP）
+3. 読者の悩みに共感する書き出し
+4. 数字・具体例を入れる
+5. アフィリエイトリンクを自然に3箇所以上挿入
+
+MDX形式で出力：
+
+---
+title: "${title}"
+date: "${new Date().toISOString().split('T')[0]}"
+genre: "${TOPIC.split('・')[0]}"
+excerpt: "${keyword}について専門家が解説。選び方のポイントと実際におすすめできる商品を紹介します。"
+---
+
+[→ Amazonで${keyword}を探す](${amazonLink})
+[→ 楽天で${keyword}を探す](${rakutenLink})
+
+\`\`\`;
 
   const prompt = `あなたはCRO（コンバージョン率最適化）の専門家でもあるプロのレビューライターです。
 「${keyword}」について、訪問者が即座に購買行動を起こしやすい、マイベスト・価格.com級の高品質な比較記事を日本語で書いてください。
@@ -244,15 +340,12 @@ async function main() {
   const blogDir = path.join(process.cwd(), 'content/blog');
   if (!fs.existsSync(blogDir)) fs.mkdirSync(blogDir, { recursive: true });
 
-  const keywords = [
-    '韓国ドラマおすすめランキング',
-    '韓国ドラマ比較',
-    '韓国ドラマ選び方',
-  ];
+  
+  const keywords = getKeywords();
+  console.log(\`Generating \${keywords.length} articles for \${SITE_NAME}...\`);
 
-  console.log(`Generating CRO-optimized articles for ${SITE_NAME}...`);
-
-  for (const keyword of keywords.slice(0, 30)) {
+  for (const keyword of keywords) {
+.slice(0, 30)) {
     try {
       console.log(`Generating: ${keyword}`);
       const content = await generateArticle(keyword);
