@@ -76,6 +76,27 @@ export default function Home() {
         </div>
       </section>
 
+        {/* 漫画・電子書籍 - ValueCommerce */}
+        <div style={{margin:'1.5rem 0',padding:'1rem',background:'var(--card)',borderRadius:'12px',border:'1px solid var(--secondary)'}}>
+          <p style={{fontSize:'11px',color:'var(--text)',fontWeight:600,marginBottom:'10px',textAlign:'center'}}>マンガをお得に読む</p>
+          <div style={{display:'flex',flexDirection:'column',gap:'8px',alignItems:'center'}}>
+            {/* Renta! */}
+            <a href="https://ck.jp.ap.valuecommerce.com/servlet/referral?sid=3767207&pid=892590463"
+              target="_blank" rel="nofollow noopener noreferrer sponsored"
+              style={{display:'block'}}>
+              <img src="https://ad.jp.ap.valuecommerce.com/servlet/gifbanner?sid=3767207&pid=892590463"
+                border="0" alt="Renta!漫画レンタル" style={{display:'block'}}/>
+            </a>
+            {/* BookLive */}
+            <a href="https://ck.jp.ap.valuecommerce.com/servlet/referral?sid=3767207&pid=892590475"
+              target="_blank" rel="nofollow noopener noreferrer sponsored"
+              style={{display:'block'}}>
+              <img src="https://ad.jp.ap.valuecommerce.com/servlet/gifbanner?sid=3767207&pid=892590475"
+                border="0" alt="BookLive電子書籍" style={{display:'block'}}/>
+            </a>
+          </div>
+          <p style={{fontSize:'9px',color:'var(--text)',opacity:0.4,textAlign:'center',marginTop:'6px'}}>PR</p>
+        </div>
     </main>
   )
 }
