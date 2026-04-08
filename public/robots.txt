@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://kdrama-beauty-jp.vercel.app/sitemap.xml
+Sitemap: https://okuwabara07-gif.github.io/kdrama-beauty-jp/sitemap.xml
