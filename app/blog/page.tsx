@@ -1,6 +1,11 @@
 import Link from 'next/link'
 import { getAllPosts } from '@/lib/posts'
 
+function thumb(title: string, genre: string) {
+  const seed = Math.abs((title+genre).split('').reduce((a:number,c:string)=>a+c.charCodeAt(0),0))
+  return `https://picsum.photos/seed/${seed}/400/200`
+}
+
 export default function BlogPage() {
   const allPosts = getAllPosts()
   const genres = Array.from(new Set(allPosts.map((p: any) => p.genre).filter(Boolean))) as string[]
@@ -36,7 +41,7 @@ export default function BlogPage() {
             <div className="post-grid">
               {genrePosts.map((post: any) => (
                 <Link key={post.slug} href={'/blog/'+post.slug} className="post-card">
-                  <div className="post-card-thumb">📄</div>
+                  <img src={thumb(post.title, post.genre||'')} alt={post.title} className="post-card-thumb" style={{objectFit:"cover"}} />
                   <div className="post-card-body">
                     <p className="post-card-genre">{post.genre}</p>
                     <h3 className="post-card-title">{post.title}</h3>
@@ -53,7 +58,7 @@ export default function BlogPage() {
           <div className="post-grid">
             {allPosts.map((post: any) => (
               <Link key={post.slug} href={'/blog/'+post.slug} className="post-card">
-                <div className="post-card-thumb">📄</div>
+                <img src={thumb(post.title, post.genre||'')} alt={post.title} className="post-card-thumb" style={{objectFit:"cover"}} />
                 <div className="post-card-body">
                   <p className="post-card-genre">{post.genre}</p>
                   <h3 className="post-card-title">{post.title}</h3>
