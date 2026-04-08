@@ -322,7 +322,7 @@ A：（50文字で回答）
 
   const body = JSON.stringify({
     model: 'claude-sonnet-4-20250514',
-    max_tokens: 4000,
+    max_tokens: 2000,
     messages: [{ role: 'user', content: prompt }]
   });
 
