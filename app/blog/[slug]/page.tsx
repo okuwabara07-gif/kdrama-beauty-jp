@@ -15,8 +15,8 @@ export async function generateMetadata({ params }: any) {
 }
 
 function img(kw: string, w: number, h: number) {
-  const en = kw.replace(/[\u3000-\u9fff\u30A0-\u30FF]/g, '').trim() || 'korean'
-  return `https://source.unsplash.com/${w}x${h}/?${encodeURIComponent(en)},korean beauty cosmetics skincare`
+  const seed = Math.abs(kw.split('').reduce((a:number,c:string)=>a+c.charCodeAt(0),0))
+  return `https://picsum.photos/seed/${seed}/${w}/${h}`
 }
 
 type Props = { params: Promise<{ slug: string }> }
