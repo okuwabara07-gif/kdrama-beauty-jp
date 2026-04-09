@@ -331,7 +331,7 @@ async function main() {
       const filename = `${Date.now()}.mdx`;
       fs.writeFileSync(path.join(blogDir, filename), content);
       console.log(`✅ Saved: ${filename}`);
-      await new Promise(r => setTimeout(r, 3000));
+      await new Promise(r => setTimeout(r, 15000));
     } catch (e) {
       console.error(`Error: ${keyword}`, e.message);
     }
