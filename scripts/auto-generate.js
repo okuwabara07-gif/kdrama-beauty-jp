@@ -122,34 +122,6 @@ async function generateArticle(keyword) {
     ranking: `「${keyword}」について、訪問者が即座に購買行動を起こしやすい比較ランキング記事を書いてください。`,
   };
 
-  const prompt = `あなたはCRO専門家でもあるプロのレビューライターです。
-${typePrompts[articleType] || typePrompts.ranking}
-
-サイト名：${SITE_NAME}
-テーマ：${TOPIC}
-評価基準：${CRITERIA}
-
-以下のCRO原則を守ってください：
-1. 冒頭に結論・1位商品を先に書く
-2. 各商品に「こんな人には向かない」デメリットも正直に書く（信頼性UP）
-3. 読者の悩みに共感する書き出し
-4. 数字・具体例を入れる
-5. アフィリエイトリンクを自然に3箇所以上挿入
-
-MDX形式で出力：
-
----
-title: "${title}"
-date: "${new Date().toISOString().split('T')[0]}"
-genre: "${TOPIC.split('・')[0]}"
-excerpt: "${keyword}について専門家が解説。選び方のポイントと実際におすすめできる商品を紹介します。"
----
-
-[→ Amazonで${keyword}を探す](${amazonLink})
-[→ 楽天で${keyword}を探す](${rakutenLink})
-
-```;
-
   const prompt = `あなたはCRO（コンバージョン率最適化）の専門家でもあるプロのレビューライターです。
 「${keyword}」について、訪問者が即座に購買行動を起こしやすい、マイベスト・価格.com級の高品質な比較記事を日本語で書いてください。
 
