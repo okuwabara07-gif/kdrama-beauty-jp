@@ -1,7 +1,7 @@
 name: Auto Post Articles
 on:
   schedule:
-    - cron: '0 1 * * *'  # 毎日JST10時
+    - cron: '15 12 * * *'
   workflow_dispatch:
 jobs:
   generate:
@@ -29,13 +29,8 @@ jobs:
           git add content/
           git diff --staged --quiet || git commit -m "auto: add articles $(date +%Y-%m-%d)"
           git push
-      - name: Deploy
-        run: npm install && npx next build
+      - name: Deploy to Vercel
+        run: npx vercel --prod --token=${{ secrets.VERCEL_TOKEN }} --yes
         env:
-          AMAZON_TRACKING_ID: haircolorab22-22
-          RAKUTEN_AFFILIATE_ID: 5253b9ed.08f9d938.5253b9ee.e71aefe8
-      - uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./out
-          force_orphan: true
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
