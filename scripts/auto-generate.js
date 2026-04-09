@@ -108,6 +108,7 @@ function getTitleByType(keyword, year, type) {
 async function generateArticle(keyword) {
   
   const articleType = getArticleType(keyword);
+  const year = new Date().getFullYear();
   const title = getTitleByType(keyword, year, articleType);
   const amazonSearchLink = `https://www.amazon.co.jp/s?k=${encodeURIComponent(keyword)}&tag=${AMAZON_TRACKING_ID}`;
   const rakutenSearchLink = `https://search.rakuten.co.jp/search/mall/${encodeURIComponent(keyword)}/?af=${RAKUTEN_AFFILIATE_ID}`;
