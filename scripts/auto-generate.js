@@ -349,7 +349,7 @@ async function main() {
 
   
   const keywords = getKeywords();
-  console.log(\`Generating \${keywords.length} articles for \${SITE_NAME}...\`);
+  console.log(`Generating \${keywords.length} articles for \${SITE_NAME}...`);
 
   for (const keyword of keywords) {
 .slice(0, 30)) {
