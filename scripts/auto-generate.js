@@ -122,7 +122,7 @@ async function generateArticle(keyword) {
     ranking: `「${keyword}」について、訪問者が即座に購買行動を起こしやすい比較ランキング記事を書いてください。`,
   };
 
-  const prompt = \`あなたはCRO専門家でもあるプロのレビューライターです。
+  const prompt = `あなたはCRO専門家でもあるプロのレビューライターです。
 ${typePrompts[articleType] || typePrompts.ranking}
 
 サイト名：${SITE_NAME}
