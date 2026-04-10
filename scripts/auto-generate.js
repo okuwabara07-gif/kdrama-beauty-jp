@@ -6,9 +6,12 @@ const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
 const AMAZON_TRACKING_ID = process.env.AMAZON_TRACKING_ID || 'haircolorab22-22';
 const RAKUTEN_AFFILIATE_ID = process.env.RAKUTEN_AFFILIATE_ID || '5253b9ed.08f9d938.5253b9ee.e71aefe8';
 const MOSHIMO_ID = '1184522';
-const SITE_NAME =  + site_name + ;
-const TOPIC =  + topic + ;
-const CRITERIA =  + criteria + ;
+const SITE_NAME = '韓ドラビューティー';
+const TOPIC = '韓国コスメ・韓国美容・Kビューティー';
+const CRITERIA = '品質・使用感・コスパ・トレンド・人気';
+const A8_NAME = 'オルビス ザ クレンジングオイル';
+const A8_URL = 'https://px.a8.net/svt/ejp?a8mat=4AZR8U+CRMNSI+1USQ+4YM976';
+const A8_DESC = '美容師も愛用する人気クレンジング';
 
 function moshimoAmazonLink(keyword) {
   const searchUrl = encodeURIComponent('https://www.amazon.co.jp/s?k=' + encodeURIComponent(keyword) + '&tag=' + AMAZON_TRACKING_ID);
@@ -37,9 +40,9 @@ function getKeywords() {
   const base = TOPIC.split('・')[0];
   return [
     base + 'おすすめランキング',
-    base + '人気ランキング',
-    base + 'コスパ最強',
+    base + '人気商品 比較',
     base + '選び方 失敗しない',
+    base + '効果 口コミ',
     base + '初心者 どれがいい',
   ];
 }
@@ -51,29 +54,36 @@ async function generateArticle(keyword) {
   const imgSeed = Math.abs(keyword.split('').reduce((a,c) => a + c.charCodeAt(0), 0));
   const title = '【' + year + '年最新】' + keyword + 'おすすめTOP5｜専門家が徹底比較';
 
-  const prompt = 'あなたはプロのレビューライターです。\n' +
-    '「' + keyword + '」について購買意欲を高める比較記事を日本語で書いてください。\n\n' +
-    '以下の形式で出力してください:\n\n' +
+  const prompt = 'あなたはプロのレビューライター兼SEO専門家です。\n' +
+    '「' + keyword + '」について、読者が購入したくなる高品質な比較記事を日本語で書いてください。\n\n' +
+    '必須条件:\n' +
+    '1. 冒頭に結論（おすすめ1位）を書く\n' +
+    '2. 実際の商品名を使う（架空商品名は禁止）\n' +
+    '3. 各商品のメリット・デメリットを正直に書く\n' +
+    '4. 読者タイプ別におすすめを提示する\n' +
+    '5. 評価基準: ' + CRITERIA + '\n\n' +
     '---\n' +
     'title: "' + title + '"\n' +
     'date: "' + new Date().toISOString().split('T')[0] + '"\n' +
     'genre: "' + TOPIC.split('・')[0] + '"\n' +
-    'excerpt: "' + keyword + 'について専門家が解説。おすすめ商品を紹介します。"\n' +
+    'excerpt: "' + keyword + 'のおすすめ商品を専門家が徹底比較。失敗しない選び方も解説。"\n' +
     '---\n\n' +
     '![' + keyword + '](https://picsum.photos/seed/' + imgSeed + '/800/450)\n\n' +
-    '[→ Amazonで探す](' + amazonLink + ')\n' +
-    '[→ 楽天で探す](' + rakutenLink + ')\n\n' +
+    '> **注目**: ' + A8_DESC + '\n' +
+    '> [→ ' + A8_NAME + 'をチェックする](' + A8_URL + ')\n\n' +
+    '[→ Amazonで探す](' + amazonLink + ') | [→ 楽天で探す](' + rakutenLink + ')\n\n' +
     '## ' + keyword + ' おすすめTOP5\n\n' +
-    CRITERIA.split('・').map(c => '- **' + c + '**').join('\n') + '\n\n' +
-    '(各商品150文字以上でレビュー。メリット・デメリット・こんな人におすすめを含める)\n\n' +
-    '[→ Amazonで今すぐ確認](' + amazonLink + ')\n' +
-    '[→ 楽天で最安値を見る](' + rakutenLink + ')\n\n' +
+    '(実際の商品名を使い各商品150文字以上でレビュー)\n\n' +
+    '## 選び方のポイント\n\n' +
+    CRITERIA.split('・').map(c => '### ' + c).join('\n') + '\n\n' +
+    '[→ ' + A8_NAME + 'の詳細を見る](' + A8_URL + ')\n\n' +
+    '[→ Amazonで今すぐ確認](' + amazonLink + ') | [→ 楽天で最安値を見る](' + rakutenLink + ')\n\n' +
     '## まとめ\n\n' +
     '※本記事はアフィリエイト広告を含みます。';
 
   const body = JSON.stringify({
     model: 'claude-sonnet-4-20250514',
-    max_tokens: 2000,
+    max_tokens: 3000,
     messages: [{ role: 'user', content: prompt }]
   });
 
