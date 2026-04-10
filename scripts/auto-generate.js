@@ -64,6 +64,7 @@ async function generateArticle(keyword) {
     '[→ Amazonで探す](' + amazonLink + ')\n' +
     '[→ 楽天で探す](' + rakutenLink + ')\n\n' +
     '## ' + keyword + ' おすすめTOP5\n\n' +
+    CRITERIA.split('・').map(c => '- **' + c + '**').join('\n') + '\n\n' +
     '(各商品150文字以上でレビュー。メリット・デメリット・こんな人におすすめを含める)\n\n' +
     '[→ Amazonで今すぐ確認](' + amazonLink + ')\n' +
     '[→ 楽天で最安値を見る](' + rakutenLink + ')\n\n' +
