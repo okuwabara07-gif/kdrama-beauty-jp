@@ -1,8 +1,1 @@
-name: Auto Post Articles
-on:
-  workflow_dispatch:
-jobs:
-  generate:
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "paused"
+# stopped
